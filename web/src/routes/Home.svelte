@@ -1,6 +1,26 @@
 <script>
+  import { push } from "svelte-spa-router";
   import Banner from "~/components/Banner.svelte";
   import Body from "~/components/Body.svelte";
+
+  let obj1, obj2;
+  let inputObj1, inputObj2;
+
+  const handleCompare = () => {
+    if (!obj1) {
+      M.toast({ html: "비교 대상 1을 입력해주세요." });
+      inputObj1.focus();
+      return false;
+    }
+
+    if (!obj2) {
+      M.toast({ html: "비교 대상 2를 입력해주세요." });
+      inputObj2.focus();
+      return false;
+    }
+
+    push(`/compare/${obj1}/${obj2}`);
+  };
 </script>
 
 <style>
@@ -46,6 +66,14 @@
       padding: 10px;
     }
   }
+
+  section {
+    margin-bottom: 4em;
+  }
+
+  section:last-child {
+    margin-bottom: 2em;
+  }
 </style>
 
 <Banner>
@@ -59,14 +87,22 @@
         <p>비교 대상을 선택하고 손쉽게 비교해보세요!</p>
       </div>
       <div class="col m6 s12">
-        <form>
+        <form on:submit|preventDefault={handleCompare}>
           <div class="input-field">
-            <input type="text" id="object1" />
+            <input
+              type="text"
+              id="object1"
+              bind:value={obj1}
+              bind:this={inputObj1} />
             <label for="object1">비교 대상 1</label>
           </div>
           <div class="versus">VS</div>
           <div class="input-field">
-            <input type="text" id="object2" />
+            <input
+              type="text"
+              id="object2"
+              bind:value={obj2}
+              bind:this={inputObj2} />
             <label for="object2">비교 대상 2</label>
           </div>
           <div class="buttons">
@@ -83,27 +119,22 @@
 </Banner>
 <Body>
   <section>
-    <h6>가을로 내 가을 듯합니다.</h6>
+    <h6>손쉽게 비교 결과를 확인해보세요!</h6>
     <p>
-      가을로 하나에 까닭이요, 봅니다. 별들을 남은 잠, 마리아 시와 옥 듯합니다.
+      비교충
+      <small>(Compaworm)</small>
+      은 두 대상의 비교 결과를 손쉽게 볼 수 있도록 도와주는 도구입니다.
       <br />
-      나는 까닭이요, 동경과 잔디가 있습니다. 봄이 이런 이름과, 불러 차 나의
-      하나의 듯합니다. 둘 잔디가 하나에 있습니다. 노새, 청춘이 않은 봅니다.
-      <br />
-      사랑과 별들을 마리아 옥 그리고 이름과 버리었습니다. 가난한 새워 묻힌
-      이름과 비둘기, 쉬이 까닭입니다.
+      갤럭시와 아이폰, 아스날과 토트넘 등 이 세상 모든 것들을 비교할 수
+      있습니다.
     </p>
   </section>
   <section>
-    <h6>가을로 내 가을 듯합니다.</h6>
+    <h6>직접 비교를 남겨보세요!</h6>
     <p>
-      가을로 하나에 까닭이요, 봅니다. 별들을 남은 잠, 마리아 시와 옥 듯합니다.
+      원하는 대상들을 선택해 직접 비교를 남길 수 있습니다.
       <br />
-      나는 까닭이요, 동경과 잔디가 있습니다. 봄이 이런 이름과, 불러 차 나의
-      하나의 듯합니다. 둘 잔디가 하나에 있습니다. 노새, 청춘이 않은 봅니다.
-      <br />
-      사랑과 별들을 마리아 옥 그리고 이름과 버리었습니다. 가난한 새워 묻힌
-      이름과 비둘기, 쉬이 까닭입니다.
+      별점과 코멘트를 통해 여러분의 의견을 남겨주세요!
     </p>
   </section>
 </Body>
