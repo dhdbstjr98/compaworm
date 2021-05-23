@@ -1,26 +1,7 @@
 <script>
-  import { push } from "svelte-spa-router";
   import Banner from "~/components/Banner.svelte";
   import Body from "~/components/Body.svelte";
-
-  let obj1, obj2;
-  let inputObj1, inputObj2;
-
-  const handleCompare = () => {
-    if (!obj1) {
-      M.toast({ html: "비교 대상 1을 입력해주세요." });
-      inputObj1.focus();
-      return false;
-    }
-
-    if (!obj2) {
-      M.toast({ html: "비교 대상 2를 입력해주세요." });
-      inputObj2.focus();
-      return false;
-    }
-
-    push(`/compare/${obj1}/${obj2}`);
-  };
+  import CompareForm from "~/components/CompareForm.svelte";
 </script>
 
 <style>
@@ -35,20 +16,6 @@
     margin-left: -0.75rem;
     margin-right: -0.75rem;
   }
-  .banner .versus {
-    padding: 20px;
-    text-align: center;
-    color: #e0f2f1;
-    font-size: 1.2rem;
-  }
-  .banner input {
-    color: #fff;
-  }
-  .banner .buttons {
-    text-align: center;
-    padding-top: 20px;
-    padding-bottom: 10px;
-  }
   .banner p {
     color: #b2dfdb;
   }
@@ -61,9 +28,6 @@
       padding-top: 0;
       text-align: center;
       margin-bottom: 30px;
-    }
-    .banner .versus {
-      padding: 10px;
     }
   }
 
@@ -87,32 +51,7 @@
         <p>비교 대상을 선택하고 손쉽게 비교해보세요!</p>
       </div>
       <div class="col m6 s12">
-        <form on:submit|preventDefault={handleCompare}>
-          <div class="input-field">
-            <input
-              type="text"
-              id="object1"
-              bind:value={obj1}
-              bind:this={inputObj1} />
-            <label for="object1">비교 대상 1</label>
-          </div>
-          <div class="versus">VS</div>
-          <div class="input-field">
-            <input
-              type="text"
-              id="object2"
-              bind:value={obj2}
-              bind:this={inputObj2} />
-            <label for="object2">비교 대상 2</label>
-          </div>
-          <div class="buttons">
-            <button
-              type="submit"
-              class="waves-effect waves-light btn teal darken-2">
-              비교하기
-            </button>
-          </div>
-        </form>
+        <CompareForm />
       </div>
     </div>
   </div>
