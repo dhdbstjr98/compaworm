@@ -4,6 +4,6 @@
   }
 </style>
 
-<div class="container body">
+<div class="body">
   <slot />
 </div>

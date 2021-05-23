@@ -28,14 +28,16 @@
 
 <Banner />
 <Body>
-  <div class="row login-wrapper">
-    <div class="col offset-l4 l4 offset-m3 m6 s12">
-      <h2>로그인</h2>
-      <div class="row login-form">
-        <div class="col s12">
-          {#each Object.keys(snsList) as sns}
-            <SocialLoginButton {sns} name={snsList[sns]} />
-          {/each}
+  <div class="container">
+    <div class="row login-wrapper">
+      <div class="col offset-l4 l4 offset-m3 m6 s12">
+        <h2>로그인</h2>
+        <div class="row login-form">
+          <div class="col s12">
+            {#each Object.keys(snsList) as sns}
+              <SocialLoginButton {sns} name={snsList[sns]} />
+            {/each}
+          </div>
         </div>
       </div>
     </div>
