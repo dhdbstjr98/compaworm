@@ -1,7 +1,7 @@
 const C = {
   DEBUG: false,
   HOST: "https://compaworm.bu.to",
-  API_HOST: "https://api.compaworm.bu.to",
+  API_HOST: "https://api.compaworm.bu.to/api",
   OAUTH: {
     KAKAO: {
       CLIENT_KEY: "d6fefd21608795a563d5d9c0131d7db7",
