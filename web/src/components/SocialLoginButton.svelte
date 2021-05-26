@@ -1,9 +1,29 @@
 <script>
   export let sns;
   export let name;
+  export let handleLogin;
+  export let color;
+  export let afterLogin;
 
-  const handleClick = () => {
-    console.log(sns);
+  import login from "~/api/login";
+  import { user } from "~/store/store";
+
+  const handleClick = async () => {
+    try {
+      const access_token = await handleLogin();
+      const res = await login(sns, access_token);
+
+      user.set({
+        name: res.name,
+        profile: res.profile,
+        token: res.token
+      });
+
+      afterLogin();
+    } catch (err) {
+      console.log(err);
+      M.toast({ html: "로그인을 실패하였습니다." });
+    }
   };
 </script>
 
@@ -26,24 +46,14 @@
     vertical-align: middle;
   }
 
-  .social-login-button.naver {
-    background-color: #1fc800;
-    border-color: #1ea505;
-    color: #fff;
+  .social-login-button {
+    background-color: var(--bg-color);
+    border-color: var(--border-color);
+    color: var(--font-color);
   }
 
-  .social-login-button.kakao {
-    background-color: #ffeb00;
-    border-color: #e2c10a;
-    color: #000;
-  }
-
-  .social-login-button.naver img {
-    border-right-color: #1ea505;
-  }
-
-  .social-login-button.kakao img {
-    border-right-color: #1ea505;
+  .social-login-button img {
+    border-right-color: var(--border-color);
   }
 
   .social-login-button span {
@@ -54,7 +64,11 @@
   }
 </style>
 
-<div class="social-login-button {sns}" on:click={handleClick}>
+<div
+  class="social-login-button {sns}"
+  on:click={handleClick}
+  style="--bg-color: {color.background}; --border-color: {color.border};
+  --font-color: {color.font}">
   <img src={`./img/sns_${sns}.png`} alt={sns} width="30" height="30" />
   <span>{name} 로그인</span>
 </div>

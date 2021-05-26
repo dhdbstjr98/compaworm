@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import { link } from "svelte-spa-router";
 
+  import MemberMenu from "~/components/MemberMenu.svelte";
+
   let btnMember;
   let btnMemberMobile;
 
@@ -65,13 +67,5 @@
     </div>
   </div>
 </nav>
-<ul id="dropdown-member" class="dropdown-content">
-  <li>
-    <a href="/login" use:link>로그인</a>
-  </li>
-</ul>
-<ul id="dropdown-member-mobile" class="dropdown-content">
-  <li>
-    <a href="/login" use:link>로그인</a>
-  </li>
-</ul>
+<MemberMenu id="dropdown-member" />
+<MemberMenu id="dropdown-member-mobile" />

@@ -1,11 +1,14 @@
 <script>
+  import { push } from "svelte-spa-router";
+
   import Banner from "~/components/Banner.svelte";
   import Body from "~/components/Body.svelte";
   import SocialLoginButton from "~/components/SocialLoginButton.svelte";
 
-  const snsList = {
-    naver: "네이버",
-    kakao: "카카오"
+  import * as oauth from "~/oauth/";
+
+  const afterLogin = () => {
+    push("/");
   };
 </script>
 
@@ -34,8 +37,8 @@
         <h2>로그인</h2>
         <div class="row login-form">
           <div class="col s12">
-            {#each Object.keys(snsList) as sns}
-              <SocialLoginButton {sns} name={snsList[sns]} />
+            {#each Object.keys(oauth) as sns}
+              <SocialLoginButton {sns} {afterLogin} {...oauth[sns]} />
             {/each}
           </div>
         </div>
