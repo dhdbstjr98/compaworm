@@ -52,3 +52,11 @@ class UserMe(APIView):
             {"name": request.user.name, "profile": request.user.profile},
             status=status.HTTP_200_OK,
         )
+
+    def delete(self, request):
+        if request.user.is_anonymous:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        UserToken.objects.filter(token=request.META["HTTP_AUTHORIZATION"]).delete()
+
+        return Response(status=status.HTTP_200_OK)
