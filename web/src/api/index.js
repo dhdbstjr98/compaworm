@@ -34,3 +34,25 @@ export const loginCheck = async () => {
 export const logout = async () => {
   return await callApi("DELETE", "/user/me");
 };
+
+export const getComparison = async (obj1, obj2) => {
+  return await callApi(
+    "GET",
+    `/comparison/${encodeURI(obj1)}/${encodeURI(obj2)}`
+  );
+};
+
+export const removeComparison = async (obj1, obj2) => {
+  return await callApi(
+    "DELETE",
+    `/comparison/${encodeURI(obj1)}/${encodeURI(obj2)}`
+  );
+};
+
+export const setComparison = async (obj1, obj2, is_obj1) => {
+  return await callApi(
+    "PUT",
+    `/comparison/${encodeURI(obj1)}/${encodeURI(obj2)}`,
+    { is_obj1 }
+  );
+};
