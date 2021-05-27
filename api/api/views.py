@@ -119,3 +119,17 @@ class ComparisonView(APIView):
                 pass
 
         return Response(res, status=status.HTTP_200_OK)
+
+    def delete(self, request, obj1, obj2):
+        if request.user.is_anonymous:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        # 글자 순으로 정렬
+        if obj2 < obj1:
+            obj1, obj2 = obj2, obj1
+
+        try:
+            Comparison.objects.get(obj1=obj1, obj2=obj2, user=request.user).delete()
+            return Response(status=status.HTTP_200_OK)
+        except Comparison.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
