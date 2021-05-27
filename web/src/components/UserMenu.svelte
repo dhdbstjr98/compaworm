@@ -3,10 +3,16 @@
 
   import { link } from "svelte-spa-router";
   import { user } from "~/store/store";
+  import { logout } from "~/api/";
 
-  const logout = () => {
-    user.set(null);
-    M.toast({ html: "안전하게 로그아웃되었습니다." });
+  const handleLogout = async () => {
+    try {
+      const res = await logout();
+      user.set(null);
+      M.toast({ html: "안전하게 로그아웃되었습니다." });
+    } catch (err) {
+      M.toast({ html: "로그아웃을 실패하였습니다." });
+    }
   };
 </script>
 
@@ -41,7 +47,7 @@
       </span>
     </li>
     <li>
-      <span on:click={logout}>로그아웃</span>
+      <span on:click={handleLogout}>로그아웃</span>
     </li>
   {:else}
     <li>

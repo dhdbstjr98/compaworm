@@ -5,7 +5,7 @@
   export let color;
   export let afterLogin;
 
-  import login from "~/api/login";
+  import { login } from "~/api/";
   import { user } from "~/store/store";
 
   const handleClick = async () => {
