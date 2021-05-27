@@ -2,14 +2,14 @@
   import { onMount } from "svelte";
   import { link } from "svelte-spa-router";
 
-  import MemberMenu from "~/components/MemberMenu.svelte";
+  import UserMenu from "~/components/UserMenu.svelte";
 
-  let btnMember;
-  let btnMemberMobile;
+  let btnUser;
+  let btnUserMobile;
 
   onMount(() => {
-    M.Dropdown.init(btnMember, { hover: true, coverTrigger: false });
-    M.Dropdown.init(btnMemberMobile, { coverTrigger: false });
+    M.Dropdown.init(btnUser, { hover: true, coverTrigger: false });
+    M.Dropdown.init(btnUserMobile, { coverTrigger: false });
   });
 </script>
 
@@ -35,7 +35,7 @@
     outline: unset;
   }
 
-  .nav-wrapper #dropdown-member li a {
+  .nav-wrapper #dropdown-user li a {
     color: #004d40;
   }
 </style>
@@ -47,9 +47,9 @@
       <ul class="right hide-on-med-and-down">
         <li class="menu">
           <div
-            data-target="dropdown-member"
+            data-target="dropdown-user"
             class="dropdown-trigger"
-            bind:this={btnMember}>
+            bind:this={btnUser}>
             <i class="material-icons">person</i>
           </div>
         </li>
@@ -57,9 +57,9 @@
       <ul class="hide-on-large-only">
         <li class="menu">
           <div
-            data-target="dropdown-member-mobile"
+            data-target="dropdown-user-mobile"
             class="dropdown-trigger"
-            bind:this={btnMemberMobile}>
+            bind:this={btnUserMobile}>
             <i class="material-icons">person</i>
           </div>
         </li>
@@ -67,5 +67,5 @@
     </div>
   </div>
 </nav>
-<MemberMenu id="dropdown-member" />
-<MemberMenu id="dropdown-member-mobile" />
+<UserMenu id="dropdown-user" />
+<UserMenu id="dropdown-user-mobile" />
