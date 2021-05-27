@@ -8,6 +8,23 @@
   import Body from "~/components/Body.svelte";
   import Footer from "~/components/Footer.svelte";
 
+  import { user } from "~/store/store";
+  import { loginCheck } from "~/api/";
+
+  if ($user) {
+    loginCheck()
+      .then(res => {
+        user.set({
+          ...$user,
+          name: res.name,
+          profile: res.profile
+        });
+      })
+      .catch(() => {
+        user.set(null);
+      });
+  }
+
   const routes = {
     "/": Home,
     "/login": Login,
