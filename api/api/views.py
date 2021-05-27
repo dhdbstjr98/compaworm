@@ -98,9 +98,7 @@ class ComparisonView(APIView):
 
     def get(self, request, obj1, obj2):
         # 글자 순으로 정렬
-        reversed = False
         if obj2 < obj1:
-            reversed = True
             obj1, obj2 = obj2, obj1
 
         total = Comparison.objects.filter(obj1=obj1, obj2=obj2).aggregate(
