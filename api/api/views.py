@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Count
 from account.models import User, UserToken
 from .models import Comment, Comparison
 from .oauth import oauth, AuthError
@@ -94,3 +95,29 @@ class ComparisonView(APIView):
 
         except json.decoder.JSONDecodeError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, obj1, obj2):
+        # 글자 순으로 정렬
+        reversed = False
+        if obj2 < obj1:
+            reversed = True
+            obj1, obj2 = obj2, obj1
+
+        total = Comparison.objects.filter(obj1=obj1, obj2=obj2).aggregate(
+            Count("obj1")
+        )["obj1__count"]
+        obj1_count = Comparison.objects.filter(
+            obj1=obj1, obj2=obj2, is_obj1=True
+        ).aggregate(Count("obj1"))["obj1__count"]
+        obj2_count = total - obj1_count
+
+        res = {obj1: obj1_count, obj2: obj2_count}
+
+        if not request.user.is_anonymous:
+            try:
+                yours = Comparison.objects.get(obj1=obj1, obj2=obj2, user=request.user)
+                res["yours"] = obj1 if (yours.is_obj1) else obj2
+            except Comparison.DoesNotExist:
+                pass
+
+        return Response(res, status=status.HTTP_200_OK)
