@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from account.models import User, UserToken
+from .models import Comment, Comparison
 from .oauth import oauth, AuthError
 import json
 import requests
@@ -11,7 +12,7 @@ import uuid
 
 
 # Create your views here.
-class UserMe(APIView):
+class UserMeView(APIView):
     def post(self, request):
         try:
             body = json.loads(request.body)
@@ -60,3 +61,36 @@ class UserMe(APIView):
         UserToken.objects.filter(token=request.META["HTTP_AUTHORIZATION"]).delete()
 
         return Response(status=status.HTTP_200_OK)
+
+
+class ComparisonView(APIView):
+    def put(self, request, obj1, obj2):
+        try:
+            if request.user.is_anonymous:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+
+            body = json.loads(request.body)
+
+            is_obj1 = body.get("is_obj1", None)
+
+            if is_obj1 == None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+            # 글자 순으로 정렬
+            if obj2 > obj1:
+                obj1, obj2 = obj2, obj1
+                is_obj1 = not is_obj1
+
+            try:
+                Comparison.objects.get(obj1=obj1, obj2=obj2, user=request.user).delete()
+            except Comparison.DoesNotExist:
+                pass
+            finally:
+                Comparison.objects.create(
+                    obj1=obj1, obj2=obj2, is_obj1=is_obj1, user=request.user
+                )
+
+            return Response(status=status.HTTP_201_CREATED)
+
+        except json.decoder.JSONDecodeError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

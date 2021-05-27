@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Comment
-from .models import Comparison
+from .models import Comment, Comparison
 
 # Register your models here.
 
