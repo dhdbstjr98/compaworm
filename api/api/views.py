@@ -77,7 +77,7 @@ class ComparisonView(APIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             # 글자 순으로 정렬
-            if obj2 > obj1:
+            if obj2 < obj1:
                 obj1, obj2 = obj2, obj1
                 is_obj1 = not is_obj1
 
