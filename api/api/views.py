@@ -143,7 +143,7 @@ class CommentView(APIView):
 
         ret = []
         try:
-            comments = Comment.objects.filter(obj1=obj1, obj2=obj2)
+            comments = Comment.objects.filter(obj1=obj1, obj2=obj2).order_by("-id")
             for comment in comments:
                 row = {
                     "comment": comment.comment,
