@@ -10,6 +10,11 @@
   export let params = {};
 
   if (!params.obj1 || !params.obj2) push("/");
+
+  let comments;
+  const onSubmitComment = () => {
+    comments.getComments();
+  };
 </script>
 
 <style>
@@ -67,7 +72,10 @@
     </div>
   </div>
   <div class="container">
-    <CommentForm obj1={params.obj1} obj2={params.obj2} />
-    <Comments obj1={params.obj1} obj2={params.obj2} />
+    <CommentForm
+      obj1={params.obj1}
+      obj2={params.obj2}
+      onSubmit={onSubmitComment} />
+    <Comments obj1={params.obj1} obj2={params.obj2} bind:this={comments} />
   </div>
 </Body>

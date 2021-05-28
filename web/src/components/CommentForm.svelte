@@ -1,14 +1,16 @@
 <script>
   export let obj1;
   export let obj2;
+  export let onSubmit = () => {};
 
-  let name = "윤석";
-  let profile = "./img/profile_no_image.png";
+  import { user } from "~/store/store";
+  import { link } from "svelte-spa-router";
+  import { writeComment } from "~/api/";
 
-  let obj;
-  let comment;
+  let obj = "";
+  let comment = "";
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!obj) {
       M.toast({ html: "대상을 선택해주세요." });
       return;
@@ -18,19 +20,36 @@
       M.toast({ html: "코멘트를 작성해주세요." });
       return;
     }
+
+    try {
+      const res = await writeComment(obj1, obj2, obj1 == obj, comment);
+      obj = "";
+      comment = "";
+      onSubmit();
+    } catch (err) {
+      M.toast({ html: "코멘트 작성을 실패하였습니다." });
+    }
   };
 </script>
 
 <style>
-  form {
+  .comment-form {
     position: relative;
     padding: 20px;
-    padding-left: 90px;
     margin-top: 2rem;
     border: 1px dashed #4db6ac;
     border-radius: 5px;
   }
-  form .profile {
+  form.comment-form {
+    padding-left: 90px;
+  }
+  div.comment-form {
+    text-align: center;
+  }
+  div.comment-form div {
+    padding: 0.5rem;
+  }
+  .comment-form .profile {
     position: absolute;
     top: 20px;
     left: 20px;
@@ -40,55 +59,77 @@
     border-radius: 50%;
     overflow: hidden;
   }
-  form .name {
+  .comment-form .profile img {
+    width: 100%;
+    height: 100%;
+  }
+  .comment-form .name {
     font-weight: 600;
     font-size: 0.9em;
     margin-bottom: 0.5em;
   }
-  form .obj-select {
+  .comment-form .obj-select {
     margin-bottom: 0.5em;
     border: 1px dashed #4db6ac;
     border-radius: 5px;
     padding: 10px;
   }
-  form .obj-select .row {
+  .comment-form .obj-select .row {
     margin: 0;
   }
-  form .obj-select .col {
+  .comment-form .obj-select .col {
     padding: 0;
   }
-  form .buttons {
+  form.comment-form .buttons {
     text-align: right;
   }
 </style>
 
-<form on:submit|preventDefault={handleSubmit}>
-  <div class="profile">
-    <img src={profile ? profile : './img/profile_no_image.png'} alt={name} />
-  </div>
-  <div class="content">
-    <div class="name">{name}</div>
-    <div class="obj-select">
-      <div class="row">
-        <div class="col m6 s12">
-          <label>
-            <input type="radio" name="obj" value={obj1} bind:group={obj} />
-            <span>{obj1}</span>
-          </label>
-        </div>
-        <div class="col m6 s12">
-          <label>
-            <input type="radio" name="obj" value={obj2} bind:group={obj} />
-            <span>{obj2}</span>
-          </label>
+{#if $user}
+  <form class="comment-form" on:submit|preventDefault={handleSubmit}>
+    <div class="profile">
+      <img
+        src={$user.profile ? $user.profile : './img/profile_no_image.png'}
+        alt={$user.name} />
+    </div>
+    <div class="content">
+      <div class="name">{$user.name}</div>
+      <div class="obj-select">
+        <div class="row">
+          <div class="col m6 s12">
+            <label>
+              <input type="radio" name="obj" value={obj1} bind:group={obj} />
+              <span>{obj1}</span>
+            </label>
+          </div>
+          <div class="col m6 s12">
+            <label>
+              <input type="radio" name="obj" value={obj2} bind:group={obj} />
+              <span>{obj2}</span>
+            </label>
+          </div>
         </div>
       </div>
+      <textarea class="materialize-textarea" bind:value={comment} />
+      <div class="buttons">
+        <button
+          class="waves-effect waves-light btn teal darken-2"
+          type="submit">
+          작성
+        </button>
+      </div>
     </div>
-    <textarea class="materialize-textarea" bind:value={comment} />
+  </form>
+{:else}
+  <div class="comment-form">
+    <div>로그인 후 코멘트 작성이 가능합니다.</div>
     <div class="buttons">
-      <button class="waves-effect waves-light btn teal darken-2" type="submit">
-        작성
-      </button>
+      <a
+        class="waves-effect waves-light btn teal darken-2"
+        href="/login"
+        use:link>
+        로그인
+      </a>
     </div>
   </div>
-</form>
+{/if}
