@@ -1,5 +1,5 @@
 <script>
-  import { push } from "svelte-spa-router";
+  import { pop } from "svelte-spa-router";
 
   import Banner from "~/components/Banner.svelte";
   import Body from "~/components/Body.svelte";
@@ -8,7 +8,7 @@
   import * as oauth from "~/oauth/";
 
   const afterLogin = () => {
-    push("/");
+    pop();
   };
 </script>
 
