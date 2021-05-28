@@ -10,6 +10,8 @@
   let obj = "";
   let comment = "";
 
+  let commentTextarea;
+
   const handleSubmit = async () => {
     if (!obj) {
       M.toast({ html: "대상을 선택해주세요." });
@@ -25,6 +27,7 @@
       const res = await writeComment(obj1, obj2, obj1 == obj, comment);
       obj = "";
       comment = "";
+      commentTextarea.style.height = "44px";
       onSubmit();
     } catch (err) {
       M.toast({ html: "코멘트 작성을 실패하였습니다." });
@@ -110,7 +113,10 @@
           </div>
         </div>
       </div>
-      <textarea class="materialize-textarea" bind:value={comment} />
+      <textarea
+        class="materialize-textarea"
+        bind:value={comment}
+        bind:this={commentTextarea} />
       <div class="buttons">
         <button
           class="waves-effect waves-light btn teal darken-2"
