@@ -56,3 +56,15 @@ export const setComparison = async (obj1, obj2, is_obj1) => {
     { is_obj1 }
   );
 };
+
+export const getComments = async (obj1, obj2) => {
+  return await callApi("GET", `/comment/${encodeURI(obj1)}/${encodeURI(obj2)}`);
+};
+
+export const writeComment = async (obj1, obj2, is_obj1, comment) => {
+  return await callApi(
+    "POST",
+    `/comment/${encodeURI(obj1)}/${encodeURI(obj2)}`,
+    { is_obj1, comment }
+  );
+};

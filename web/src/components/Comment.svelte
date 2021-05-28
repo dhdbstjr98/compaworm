@@ -1,5 +1,4 @@
 <script>
-  export let name;
   export let profile;
   export let comment;
   export let createdAt;
@@ -50,6 +49,7 @@
     margin: 0;
     margin-bottom: 0.5em;
     font-size: 0.9em;
+    white-space: pre-line;
   }
   .comment .date {
     font-size: 0.8em;
@@ -66,11 +66,13 @@
 <div class="comment-wrapper">
   <div class="comment" class:comment-left={isLeft}>
     <div class="profile">
-      <img src={profile ? profile : './img/profile_no_image.png'} alt={name} />
+      <img
+        src={profile ? profile : './img/profile_no_image.png'}
+        alt={author} />
     </div>
     <div class="content">
       <div class="text">
-        <div class="name">{name}</div>
+        <div class="name">{author}</div>
         <p>{comment}</p>
       </div>
       <div class="date">{createdAt}</div>
