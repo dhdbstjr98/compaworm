@@ -133,3 +133,65 @@ class ComparisonView(APIView):
             return Response(status=status.HTTP_200_OK)
         except Comparison.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class CommentView(APIView):
+    def get(self, request, obj1, obj2):
+        # 글자 순으로 정렬
+        reversed = False
+        if obj2 < obj1:
+            obj1, obj2 = obj2, obj1
+            reversed = True
+
+        ret = []
+        try:
+            comments = Comment.objects.filter(obj1=obj1, obj2=obj2)
+            for comment in comments:
+                row = {
+                    "comment": comment.comment,
+                    "author": comment.author.name,
+                    "created_at": comment.created_at.strftime("%Y-%m-%d %H-%M-%S"),
+                    "obj": comment.obj1 if comment.is_obj1 else comment.obj2,
+                }
+
+                if reversed:
+                    row["obj1"] = comment.obj2
+                    row["obj2"] = comment.obj1
+                else:
+                    row["obj1"] = comment.obj1
+                    row["obj2"] = comment.obj2
+
+                ret.append(row)
+        except Comment.DoesNotExist:
+            pass
+
+        return Response(ret, status=status.HTTP_200_OK)
+
+    def post(self, request, obj1, obj2):
+        try:
+            if request.user.is_anonymous:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+
+            body = json.loads(request.body)
+            is_obj1 = body.get("is_obj1", None)
+            comment = body.get("comment", None)
+
+            if is_obj1 == None or comment == None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+            # 글자 순으로 정렬
+            if obj2 < obj1:
+                obj1, obj2 = obj2, obj1
+                is_obj1 = not is_obj1
+
+            Comment.objects.create(
+                obj1=obj1,
+                obj2=obj2,
+                author=request.user,
+                is_obj1=is_obj1,
+                comment=comment,
+            )
+
+            return Response(status=status.HTTP_200_OK)
+        except json.decoder.JSONDecodeError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
