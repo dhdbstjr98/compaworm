@@ -138,10 +138,8 @@ class ComparisonView(APIView):
 class CommentView(APIView):
     def get(self, request, obj1, obj2):
         # 글자 순으로 정렬
-        reversed = False
         if obj2 < obj1:
             obj1, obj2 = obj2, obj1
-            reversed = True
 
         ret = []
         try:
@@ -150,16 +148,10 @@ class CommentView(APIView):
                 row = {
                     "comment": comment.comment,
                     "author": comment.author.name,
+                    "profile": comment.author.profile,
                     "created_at": comment.created_at.strftime("%Y-%m-%d %H-%M-%S"),
                     "obj": comment.obj1 if comment.is_obj1 else comment.obj2,
                 }
-
-                if reversed:
-                    row["obj1"] = comment.obj2
-                    row["obj2"] = comment.obj1
-                else:
-                    row["obj1"] = comment.obj1
-                    row["obj2"] = comment.obj2
 
                 ret.append(row)
         except Comment.DoesNotExist:
