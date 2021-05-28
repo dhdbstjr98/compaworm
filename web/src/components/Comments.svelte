@@ -14,7 +14,7 @@
         isLeft: comment.obj == obj1
       }));
     } catch (err) {
-      M.toast({ html: "댓글을 불러오는데 실패하였습니다." });
+      M.toast({ html: "코멘트를 불러오는데 실패하였습니다." });
     }
   };
 
