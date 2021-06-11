@@ -4,7 +4,7 @@
   export let onSubmit = () => {};
 
   import { user } from "~/store/store";
-  import { link } from "svelte-spa-router";
+  import { link, location } from "svelte-spa-router";
   import { writeComment } from "~/api/";
 
   let obj = "";
@@ -132,7 +132,7 @@
     <div class="buttons">
       <a
         class="waves-effect waves-light btn teal darken-2"
-        href="/login"
+        href="/login?page={$location}"
         use:link>
         로그인
       </a>

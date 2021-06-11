@@ -1,7 +1,7 @@
 <script>
   export let id;
 
-  import { link } from "svelte-spa-router";
+  import { link, location } from "svelte-spa-router";
   import { user } from "~/store/store";
   import { logout } from "~/api/";
 
@@ -51,7 +51,7 @@
     </li>
   {:else}
     <li>
-      <a href="/login" use:link>로그인</a>
+      <a href="/login?page={$location}" use:link>로그인</a>
     </li>
   {/if}
 </ul>

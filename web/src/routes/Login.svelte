@@ -1,5 +1,5 @@
 <script>
-  import { pop } from "svelte-spa-router";
+  import { push, querystring } from "svelte-spa-router";
 
   import Banner from "~/components/Banner.svelte";
   import Body from "~/components/Body.svelte";
@@ -8,7 +8,15 @@
   import * as oauth from "~/oauth/";
 
   const afterLogin = () => {
-    pop();
+    const queries = $querystring.split("&");
+    for (let i in queries) {
+      const [key, val] = queries[i].split("=");
+      if (key === "page") {
+        push(val);
+        return;
+      }
+    }
+    push("/");
   };
 </script>
 
